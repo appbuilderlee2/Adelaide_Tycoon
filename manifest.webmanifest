@@ -1,10 +1,10 @@
 {
-  "name":"Adelaide Tycoon",
-  "short_name":"Tycoon",
-  "description":"一部電話多人輪流玩的 Adelaide 大富翁 PWA",
-  "start_url":"./",
+  "name":"Adelaide Tycoon V0.5",
+  "short_name":"Tycoon V0.5",
+  "description":"一部電話多人輪流玩的 Adelaide 大富翁 PWA — V0.5",
+  "start_url":"./?v=5",
   "display":"standalone",
-  "background_color":"#f5f6f2",
-  "theme_color":"#f5f6f2",
+  "background_color":"#0d1724",
+  "theme_color":"#0d1724",
   "lang":"zh-HK"
 }
