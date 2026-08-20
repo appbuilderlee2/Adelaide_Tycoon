@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f6f2" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Adelaide Tycoon V0.4</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div><div class="version">V0.4 · 本地多人 PWA</div><h1>Adelaide Tycoon</h1></div>
+      <div class="top-actions"><button id="settingsBtn" class="ghost-btn">⚙️ 設定</button><button id="newGameBtn" class="ghost-btn">新遊戲</button></div>
+    </header>
+
+    <section id="setupPanel" class="panel setup-panel">
+      <h2>建立玩家</h2><p>2–6 位玩家，共用同一部電話輪流玩。</p>
+      <div id="playerInputs" class="player-inputs"></div>
+      <div class="setup-actions"><button id="addPlayerBtn" class="secondary-btn">＋ 加玩家</button><button id="startGameBtn" class="primary-btn">開始遊戲</button></div>
+    </section>
+
+    <main id="gamePanel" class="game hidden">
+      <section class="players-strip" id="playersStrip"></section>
+      <section class="status-row">
+        <div><span class="muted">回合</span><strong id="turnName">—</strong></div>
+        <div><span class="muted">位置</span><strong id="turnPos">—</strong></div>
+        <div class="dice-status"><span class="muted">骰</span><div class="dice-pair"><span id="die1" class="die">–</span><span id="die2" class="die">–</span></div></div>
+        <div><span class="muted">狀態</span><strong id="jailStatus">正常</strong></div>
+      </section>
+      <section class="board-wrap"><div id="board" class="board" aria-label="Adelaide Tycoon 遊戲棋盤"></div></section>
+
+      <section class="property-panel panel">
+        <div><div class="muted" id="spaceType">目前位置</div><h2 id="spaceName">START</h2><div id="spaceMeta" class="space-meta"></div></div>
+        <div class="property-actions">
+          <button id="buyBtn" class="primary-btn hidden">購買</button>
+          <button id="auctionBtn" class="auction-btn hidden">拍賣</button>
+          <button id="buildBtn" class="build-btn hidden">建屋</button>
+          <button id="endTurnBtn" class="secondary-btn hidden">結束回合</button>
+        </div>
+      </section>
+
+      <section id="message" class="message" aria-live="polite">按「擲骰」開始。</section>
+      <details class="log-panel"><summary>遊戲紀錄</summary><div id="gameLog" class="game-log"></div></details>
+
+      <nav class="bottom-actions">
+        <button id="rollBtn" class="action-btn action-blue"><span>🎲</span>擲骰</button>
+        <button id="assetsBtn" class="action-btn"><span>🏠</span>資產</button>
+        <button id="tradeBtn" class="action-btn"><span>↔️</span>交易</button>
+        <button id="playersBtn" class="action-btn"><span>👥</span>玩家</button>
+      </nav>
+    </main>
+  </div>
+
+  <dialog id="modal"><div class="modal-inner"><div class="modal-head"><h2 id="modalTitle">資料</h2><button id="closeModalBtn" class="icon-btn" aria-label="關閉">✕</button></div><div id="modalBody"></div></div></dialog>
+  <dialog id="confirmModal"><div class="confirm-box"><div class="confirm-icon">🤝</div><div class="muted">交易確認</div><h2 id="confirmTitle">—</h2><div id="confirmBody"></div><div class="confirm-actions"><button id="rejectTradeBtn" class="secondary-btn">拒絕</button><button id="acceptTradeBtn" class="primary-btn">接受交易</button></div></div></dialog>
+
+  <dialog id="cardModal" class="card-modal"><div class="event-card"><div id="eventCardIcon" class="event-card-icon">?</div><div id="eventCardType" class="event-card-type">CHANCE</div><h2 id="eventCardText">—</h2><button id="eventCardContinue" class="primary-btn">繼續</button></div></dialog>
+  <dialog id="passModal" class="pass-modal"><div class="pass-screen"><div class="pass-phone">📱</div><div class="muted">下一位玩家</div><h2 id="passPlayerName">—</h2><p>請將電話交俾呢位玩家。其他人唔好偷睇資產操作。</p><button id="passContinueBtn" class="primary-btn">我係呢位玩家 · 開始回合</button></div></dialog>
+  <dialog id="settingsModal"><div class="modal-inner"><div class="modal-head"><h2>遊戲設定</h2><button id="closeSettingsBtn" class="icon-btn" aria-label="關閉">✕</button></div><div class="settings-list">
+    <label class="setting-row"><span><strong>音效</strong><small>擲骰、買地、事件卡提示音</small></span><input id="soundToggle" type="checkbox" checked></label>
+    <label class="setting-row"><span><strong>震動</strong><small>支援裝置會提供輕微觸感</small></span><input id="vibrationToggle" type="checkbox" checked></label>
+    <label class="setting-row"><span><strong>交電話私隱畫面</strong><small>每回合完結先遮住棋盤</small></span><input id="privacyToggle" type="checkbox" checked></label>
+    <label class="setting-row"><span><strong>快速動畫</strong><small>縮短棋子逐格移動時間</small></span><input id="fastAnimationToggle" type="checkbox"></label>
+  </div></div></dialog>
+  <dialog id="winnerModal"><div class="winner"><div class="winner-icon">🏆</div><div class="muted">最後勝利者</div><h2 id="winnerName">—</h2><p>其他玩家已經破產，恭喜勝出 Adelaide Tycoon！</p><div class="winner-actions"><button id="closeWinnerBtn" class="secondary-btn">查看棋盤</button><button id="restartWinnerBtn" class="primary-btn">再玩一局</button></div></div></dialog>
+  <script src="app.js"></script>
+</body>
+</html>
