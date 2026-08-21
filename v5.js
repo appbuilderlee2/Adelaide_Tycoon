@@ -1,71 +1,107 @@
 (()=>{
-  const VERSION='V0.5';
+  const VERSION='V0.6';
   const q=s=>document.querySelector(s);
+  const qa=s=>Array.from(document.querySelectorAll(s));
   const toast=text=>{
     const old=q('.v5-toast'); if(old) old.remove();
-    const t=document.createElement('div'); t.className='v5-toast'; t.textContent=text; document.body.appendChild(t);
+    const t=document.createElement('div');
+    t.className='v5-toast';
+    t.textContent=text;
+    document.body.appendChild(t);
     setTimeout(()=>t.remove(),1800);
   };
 
   document.title=`Adelaide Tycoon ${VERSION}`;
-  const stageName=q('#rollStageName'), stageHint=q('#rollStageHint');
+  qa('.version').forEach(el=>el.textContent=`${VERSION} · 本地多人 PWA`);
 
   function syncStage(){
-    try{
-      const p=state?.players?.[state.current];
-      if(!p) return;
-      if(stageName) stageName.textContent=`${p.name}，到你喇`;
-      if(stageHint) stageHint.textContent=state.rolled?'今回合已擲骰，完成操作後按「結束回合」':'撳右邊大型骰仔開始今個回合';
-      const hero=q('#rollHeroBtn');
-      if(hero) hero.setAttribute('aria-disabled',String(!!(state.rolled||animating||state.winner)));
-    }catch{}
-  }
-
-  const legacyRender=window.render;
-  if(typeof legacyRender==='function'){
-    window.render=function(){ const out=legacyRender.apply(this,arguments); syncStage(); return out; };
-  }
-
-  const legacyRoll=window.rollDice;
-  async function safeRoll(){
-    try{
-      if(!state?.players?.length){ toast('請先開始遊戲'); return; }
-      if(state.winner){ toast('遊戲已完結'); return; }
-      if(animating){ toast('棋子移動中'); return; }
-      if(state.rolled){ toast('今回合已擲骰，請先結束回合'); return; }
-      const hero=q('#rollHeroBtn');
-      hero?.classList.add('v5-rolling');
-      if(typeof legacyRoll!=='function') throw new Error('rollDice unavailable');
-      await legacyRoll();
-      syncStage();
-    }catch(err){
-      console.error('V0.5 dice error',err);
-      const m=q('#message'); if(m) m.textContent='擲骰發生錯誤，請重新載入 V0.5。';
-      toast('擲骰錯誤已捕捉');
-    }finally{
-      q('#rollHeroBtn')?.classList.remove('v5-rolling');
+    const turn=(q('#turnName')?.textContent || '下一位玩家').trim();
+    const rolled=!q('#endTurnBtn')?.classList.contains('hidden');
+    if(q('#rollStageName')) q('#rollStageName').textContent=`${turn}，到你喇`;
+    if(q('#heroTurnChip')) q('#heroTurnChip').textContent=rolled?'已擲骰':'未擲骰';
+    if(q('#rollStageHint')) q('#rollStageHint').textContent=rolled?'今個回合已擲骰，請完成操作後按「結束回合」':'撳大型骰仔開始今個回合';
+    const hero=q('#rollHeroBtn');
+    if(hero) hero.classList.toggle('is-disabled',rolled);
+    const bottom=q('#rollBtn');
+    if(bottom){
+      bottom.disabled=false;
+      bottom.classList.toggle('is-disabled',rolled);
     }
   }
 
-  function bindRollButton(id){
-    const old=q(id); if(!old) return;
-    const fresh=old.cloneNode(true);
-    fresh.disabled=false;
-    old.replaceWith(fresh);
-    fresh.addEventListener('click',safeRoll,{passive:true});
-  }
-  bindRollButton('#rollBtn');
-  q('#rollHeroBtn')?.addEventListener('click',safeRoll,{passive:true});
+  const appRollBtn=q('#rollBtn');
+  const originalRollHandler=appRollBtn?.onclick || null;
+  const originalStartHandler=q('#startGameBtn')?.onclick || null;
+  const originalEndHandler=q('#endTurnBtn')?.onclick || null;
 
-  const obs=new MutationObserver(()=>{
-    const b=q('#rollBtn'); if(b&&b.disabled) b.disabled=false;
-    syncStage();
-  });
-  const game=q('#gamePanel'); if(game) obs.observe(game,{subtree:true,childList:true,attributes:true,attributeFilter:['disabled','class']});
+  async function safeRoll(ev){
+    ev?.preventDefault?.();
+    const rolled=!q('#endTurnBtn')?.classList.contains('hidden');
+    if(q('#setupPanel') && !q('#setupPanel').classList.contains('hidden')){
+      toast('請先開始遊戲');
+      return;
+    }
+    if(rolled){
+      toast('今個回合已擲骰');
+      return;
+    }
+    q('#rollHeroBtn')?.classList.add('v5-rolling');
+    try{
+      if(typeof originalRollHandler==='function'){
+        await originalRollHandler.call(appRollBtn || q('#rollHeroBtn'), ev || new Event('click'));
+      } else {
+        throw new Error('Missing original roll handler');
+      }
+    } catch(err){
+      console.error('V0.6 dice error',err);
+      if(q('#message')) q('#message').textContent='擲骰發生錯誤，請重新載入 V0.6。';
+      toast('擲骰出錯');
+    } finally {
+      q('#rollHeroBtn')?.classList.remove('v5-rolling');
+      setTimeout(syncStage,40);
+    }
+  }
+
+  function addPressFx(btn){
+    if(!btn) return;
+    btn.addEventListener('pointerdown',()=>btn.classList.add('btn-press'));
+    const clear=()=>btn.classList.remove('btn-press');
+    btn.addEventListener('pointerup',clear);
+    btn.addEventListener('pointercancel',clear);
+    btn.addEventListener('mouseleave',clear);
+  }
+
+  addPressFx(q('#rollHeroBtn'));
+  addPressFx(q('#rollBtn'));
+  ['#buyBtn','#auctionBtn','#buildBtn','#endTurnBtn','#assetsBtn','#tradeBtn','#playersBtn','#settingsBtn','#newGameBtn','#startGameBtn'].forEach(id=>addPressFx(q(id)));
+
+  if(appRollBtn){
+    appRollBtn.onclick=null;
+    appRollBtn.addEventListener('click',safeRoll,{passive:false});
+  }
+  q('#rollHeroBtn')?.addEventListener('click',safeRoll,{passive:false});
+
+  if(typeof originalStartHandler==='function' && q('#startGameBtn')){
+    q('#startGameBtn').onclick=function(e){
+      const out=originalStartHandler.call(this,e);
+      setTimeout(syncStage,80);
+      return out;
+    }
+  }
+  if(typeof originalEndHandler==='function' && q('#endTurnBtn')){
+    q('#endTurnBtn').onclick=function(e){
+      const out=originalEndHandler.call(this,e);
+      setTimeout(syncStage,80);
+      return out;
+    }
+  }
+
+  const obs=new MutationObserver(()=>syncStage());
+  if(q('#gamePanel')) obs.observe(q('#gamePanel'),{subtree:true,childList:true,attributes:true,attributeFilter:['class','disabled']});
 
   if('serviceWorker' in navigator){
     navigator.serviceWorker.getRegistration().then(reg=>reg?.update()).catch(()=>{});
-    navigator.serviceWorker.addEventListener('controllerchange',()=>toast('V0.5 已更新'));
+    navigator.serviceWorker.addEventListener('controllerchange',()=>toast('V0.6 已更新'));
   }
 
   syncStage();
