@@ -1,11 +1,11 @@
 (()=>{
-  const VERSION='V0.6.2';
+  const VERSION='V0.7';
   const q=s=>document.querySelector(s);
   const qa=s=>Array.from(document.querySelectorAll(s));
+  const TOKENS=['🚗','🎩','🐕','🚢','🛼','🦆'];
 
   const toast=text=>{
-    const old=q('.v5-toast');
-    if(old) old.remove();
+    q('.v5-toast')?.remove();
     const t=document.createElement('div');
     t.className='v5-toast';
     t.textContent=text;
@@ -15,128 +15,243 @@
 
   document.title=`Adelaide Tycoon ${VERSION}`;
   qa('.version').forEach(el=>el.textContent=`${VERSION} · 本地多人 PWA`);
-  const badge=q('.version-badge');
-  if(badge) badge.textContent=VERSION;
+  const badge=q('.version-badge'); if(badge) badge.textContent=VERSION;
+  const tag=q('.hero-tag'); if(tag) tag.textContent='Mobile Board Game Update';
+  const heroCopy=q('.hero-copy p'); if(heroCopy) heroCopy.textContent='參考現代手機桌遊節奏：Quick Mode、House Rules、自訂棋子、回合 HUD 同更強動畫回饋。';
 
-  // Critical QA hotfix: app.js defines 25 spaces but its original grid() only
-  // returned 20 coordinates. Replace it before the user starts a new game.
   const BOARD_COORDS=[
     [7,1],[6,2],[7,2],[7,3],[7,4],[7,5],[7,6],[7,7],
     [6,7],[5,7],[4,7],[3,7],[2,7],[1,7],
     [1,6],[1,5],[1,4],[1,3],[1,2],[1,1],
     [2,1],[3,1],[4,1],[5,1],[6,1]
   ];
-  try{
-    grid=function(i){return BOARD_COORDS[i]};
-  }catch(err){
-    console.error('Unable to patch board grid',err);
-  }
+  try{grid=function(i){return BOARD_COORDS[i]}}catch(err){console.error('grid patch failed',err)}
 
-  const rollBtn=q('#rollBtn');
-  const heroBtn=q('#rollHeroBtn');
-  const startBtn=q('#startGameBtn');
+  const setup=q('#setupPanel'), game=q('#gamePanel'), players=q('#playerInputs');
+  const rollBtn=q('#rollBtn'), heroBtn=q('#rollHeroBtn'), startBtn=q('#startGameBtn'), endBtn=q('#endTurnBtn');
+  let selectedMode='classic';
+  let rules={freeParking:true,doubleGo:false};
 
-  function runSelfCheck(){
-    const errors=[];
-    try{
-      if(typeof SPACES==='undefined') errors.push('SPACES 未載入');
-      else if(SPACES.length!==BOARD_COORDS.length) errors.push(`格數 ${SPACES.length} 與座標 ${BOARD_COORDS.length} 不一致`);
-    }catch{errors.push('無法讀取棋盤資料')}
-    const unique=new Set(BOARD_COORDS.map(([r,c])=>`${r},${c}`));
-    if(unique.size!==BOARD_COORDS.length) errors.push('棋盤座標有重複');
-    ['#startGameBtn','#rollBtn','#buyBtn','#endTurnBtn','#assetsBtn','#tradeBtn','#playersBtn'].forEach(id=>{
-      if(!q(id)) errors.push(`缺少 ${id}`);
+  function injectSetupOptions(){
+    if(!setup || q('#v7Options')) return;
+    const box=document.createElement('div');
+    box.id='v7Options'; box.className='v7-options';
+    box.innerHTML=`
+      <div class="v7-option-title">遊戲模式</div>
+      <div class="v7-segmented" role="group" aria-label="遊戲模式">
+        <button type="button" class="active" data-mode="classic"><b>Classic</b><small>完整大富翁</small></button>
+        <button type="button" data-mode="quick"><b>Quick</b><small>6 輪後計資產</small></button>
+      </div>
+      <div class="v7-option-title">House Rules</div>
+      <div class="v7-rules">
+        <label><input id="ruleFreeParking" type="checkbox" checked><span><b>Free Parking Jackpot</b><small>事件罰款累積到免費泊車</small></span></label>
+        <label><input id="ruleDoubleGo" type="checkbox"><span><b>Double GO</b><small>剛好落 START 額外 +$200</small></span></label>
+      </div>`;
+    setup.insertBefore(box,setup.querySelector('.setup-actions'));
+    qa('.v7-segmented button').forEach(b=>b.onclick=()=>{
+      selectedMode=b.dataset.mode;
+      qa('.v7-segmented button').forEach(x=>x.classList.toggle('active',x===b));
     });
-    if(rollBtn && typeof rollBtn.onclick!=='function') errors.push('核心擲骰 handler 未綁定');
-    if(startBtn && typeof startBtn.onclick!=='function') errors.push('開始遊戲 handler 未綁定');
-    const status=q('#qaStatus');
-    if(status){
-      status.textContent=errors.length?`QA：${errors.length} 個問題`:'QA：核心檢查通過';
-      status.classList.toggle('qa-bad',!!errors.length);
-      status.classList.toggle('qa-good',!errors.length);
-    }
-    if(errors.length){
-      console.error('Adelaide Tycoon self-check failed',errors);
-      toast(`自檢發現 ${errors.length} 個問題`);
-      return false;
-    }
-    console.info('Adelaide Tycoon V0.6.2 self-check passed');
-    return true;
+    q('#ruleFreeParking').onchange=e=>rules.freeParking=e.target.checked;
+    q('#ruleDoubleGo').onchange=e=>rules.doubleGo=e.target.checked;
   }
 
-  function recoverLoadedGame(){
-    try{
-      if(typeof state!=='undefined' && state?.players?.length && q('#gamePanel') && !q('#gamePanel').classList.contains('hidden')){
-        // app.js may have tried to render a saved game before the grid patch existed.
-        render();
-        msg(`已修復並載入上次遊戲。現在到 ${state.players[state.current].name}。`);
-        save();
-        return true;
-      }
-    }catch(err){
-      console.error('Saved-game recovery failed',err);
-      const m=q('#message');
-      if(m) m.textContent='舊存檔載入失敗，請按「新遊戲」重新開始。';
+  function decoratePlayerRows(){
+    if(!players) return;
+    [...players.children].forEach((row,i)=>{
+      if(row.querySelector('.v7-token-select')) return;
+      const select=document.createElement('select');
+      select.className='v7-token-select';
+      select.setAttribute('aria-label',`玩家 ${i+1} 棋子`);
+      select.innerHTML=TOKENS.map((t,n)=>`<option value="${t}" ${n===i%TOKENS.length?'selected':''}>${t}</option>`).join('');
+      row.appendChild(select);
+      const preview=row.querySelector('.pawn-preview');
+      if(preview) preview.textContent=select.value;
+      select.onchange=()=>{if(preview)preview.textContent=select.value};
+    });
+  }
+
+  function injectHud(){
+    if(!game || q('#v7TurnHud')) return;
+    const hud=document.createElement('section');
+    hud.id='v7TurnHud'; hud.className='v7-turn-hud';
+    hud.innerHTML=`<div class="v7-current-token">🎩</div><div class="v7-hud-copy"><small>YOUR TURN</small><strong>—</strong><span>現金 $0</span></div><div class="v7-hud-side"><b id="v7ModeLabel">CLASSIC</b><span id="v7RoundLabel">Round 1</span></div>`;
+    const status=game.querySelector('.status-row');
+    game.insertBefore(hud,status);
+  }
+
+  function ensureV7State(){
+    if(typeof state==='undefined') return;
+    state.v7=state.v7||{};
+    state.v7.mode=state.v7.mode||selectedMode;
+    state.v7.rules={freeParking:true,doubleGo:false,...rules,...(state.v7.rules||{})};
+    state.v7.turns=state.v7.turns||0;
+    state.v7.freePot=state.v7.freePot||0;
+    state.v7.maxTurns=state.v7.maxTurns||Math.max(12,(state.players?.length||2)*6);
+    (state.players||[]).forEach((p,i)=>{p.token=p.token||TOKENS[i%TOKENS.length]});
+  }
+
+  function netWorth(p){
+    return p.cash+(p.assets||[]).reduce((n,i)=>n+Math.round((SPACES[i]?.price||0)/2)+(state.houses?.[i]||0)*Math.round((SPACES[i]?.build||0)/2),0);
+  }
+
+  function refreshTokens(){
+    if(typeof state==='undefined'||!state?.players?.length) return;
+    qa('.space[data-index]').forEach(space=>{
+      const i=+space.dataset.index, row=space.querySelector('.token-row');
+      if(!row) return;
+      row.innerHTML='';
+      state.players.forEach((p,pi)=>{
+        if(!p.bankrupt&&p.pos===i){
+          const t=document.createElement('span');
+          t.className='pawn-token v7-token'+(pi===state.current?' current-token':'');
+          t.style.setProperty('--pawn',p.color);
+          t.textContent=p.token||TOKENS[pi%TOKENS.length];
+          row.appendChild(t);
+        }
+      });
+    });
+    qa('.player-card').forEach((card,i)=>{const el=card.querySelector('.mini-pawn');if(el)el.textContent=state.players[i]?.token||TOKENS[i%TOKENS.length]});
+  }
+
+  function updateHud(){
+    if(typeof state==='undefined'||!state?.players?.length) return;
+    ensureV7State();
+    const p=state.players[state.current], hud=q('#v7TurnHud');
+    if(hud){
+      hud.style.setProperty('--player',p.color);
+      hud.querySelector('.v7-current-token').textContent=p.token||'🎩';
+      hud.querySelector('.v7-hud-copy strong').textContent=p.name;
+      hud.querySelector('.v7-hud-copy span').textContent=`現金 $${p.cash} · 資產 ~$${netWorth(p)}`;
+      q('#v7ModeLabel').textContent=state.v7.mode==='quick'?'QUICK':'CLASSIC';
+      const round=Math.floor(state.v7.turns/Math.max(1,state.players.length))+1;
+      q('#v7RoundLabel').textContent=state.v7.mode==='quick'?`Round ${round}/6`:`Round ${round}`;
     }
-    return false;
+    const pot=q('#v7PotBadge'); if(pot) pot.textContent=`FREE PARKING $${state.v7.freePot||0}`;
+  }
+
+  function enhancePropertyPanel(){
+    if(typeof state==='undefined'||!state?.players?.length) return;
+    const p=state.players[state.current], s=SPACES[p.pos], panel=q('.property-panel');
+    if(!panel) return;
+    panel.classList.toggle('v7-property',s.type==='property');
+    panel.style.setProperty('--group',s.group&&GROUPS[s.group]?GROUPS[s.group][1]:'#2487f3');
+    if(!q('#v7PotBadge')){
+      const badge=document.createElement('div');badge.id='v7PotBadge';badge.className='v7-pot-badge';panel.appendChild(badge);
+    }
+  }
+
+  function diceBurst(){
+    if(typeof state==='undefined'||!state?.lastDice) return;
+    q('.v7-dice-burst')?.remove();
+    const b=document.createElement('div'); b.className='v7-dice-burst';
+    b.innerHTML=`<div>${DICE[state.lastDice.d1-1]} ${DICE[state.lastDice.d2-1]}</div><strong>${state.lastDice.sum}</strong>`;
+    document.body.appendChild(b); setTimeout(()=>b.remove(),1000);
   }
 
   function syncStage(){
-    const turn=(q('#turnName')?.textContent || '下一位玩家').trim();
-    const setupVisible=q('#setupPanel') && !q('#setupPanel').classList.contains('hidden');
-    const rolled=!q('#endTurnBtn')?.classList.contains('hidden');
-    const blocked=setupVisible || rolled || !!rollBtn?.disabled;
-    if(q('#rollStageName')) q('#rollStageName').textContent=setupVisible?'先建立玩家':`${turn}，到你喇`;
-    if(q('#heroTurnChip')) q('#heroTurnChip').textContent=setupVisible?'未開始':rolled?'已擲骰':'未擲骰';
-    if(q('#rollStageHint')) q('#rollStageHint').textContent=setupVisible?'開始遊戲後就可以擲骰':rolled?'今個回合已擲骰，請完成操作後按「結束回合」':'撳大型骰仔開始今個回合';
-    if(heroBtn){
-      heroBtn.classList.toggle('is-disabled',blocked);
-      heroBtn.setAttribute('aria-disabled',String(blocked));
+    const turn=(q('#turnName')?.textContent||'下一位玩家').trim();
+    const setupVisible=setup&&!setup.classList.contains('hidden');
+    const rolled=!endBtn?.classList.contains('hidden');
+    const blocked=setupVisible||rolled||!!rollBtn?.disabled;
+    if(q('#rollStageName'))q('#rollStageName').textContent=setupVisible?'先建立玩家':`${turn}，到你喇`;
+    if(q('#heroTurnChip'))q('#heroTurnChip').textContent=setupVisible?'未開始':rolled?'已擲骰':'未擲骰';
+    if(q('#rollStageHint'))q('#rollStageHint').textContent=setupVisible?'揀模式、棋子同規則後開始':rolled?'完成買地／交易後結束回合':'撳骰仔開始今個回合';
+    heroBtn?.classList.toggle('is-disabled',blocked);
+    updateHud(); refreshTokens(); enhancePropertyPanel();
+  }
+
+  injectSetupOptions(); decoratePlayerRows(); injectHud();
+  if(players) new MutationObserver(()=>decoratePlayerRows()).observe(players,{childList:true});
+
+  const legacyStart=startGame;
+  startGame=function(){
+    const chosen=[...players.children].map((r,i)=>r.querySelector('.v7-token-select')?.value||TOKENS[i%TOKENS.length]);
+    legacyStart();
+    if(!state?.players?.length)return;
+    state.players.forEach((p,i)=>p.token=chosen[i]);
+    state.v7={mode:selectedMode,rules:{...rules},turns:0,freePot:0,maxTurns:state.players.length*6};
+    if(selectedMode==='quick') state.players.forEach(p=>p.cash=1200);
+    save(); render(); toast(selectedMode==='quick'?'Quick Mode：6 輪後計總資產':'Classic Mode 開始');
+  };
+  if(startBtn) startBtn.onclick=startGame;
+
+  const legacyRenderBoard=renderBoard;
+  renderBoard=function(){legacyRenderBoard();refreshTokens()};
+  const legacyRenderPlayers=renderPlayers;
+  renderPlayers=function(){legacyRenderPlayers();refreshTokens()};
+  const legacyRender=render;
+  render=function(){legacyRender();ensureV7State();updateHud();refreshTokens();enhancePropertyPanel()};
+
+  const legacyMove=move;
+  move=async function(p,n){
+    await legacyMove(p,n);
+    ensureV7State();
+    if(state.v7.rules.doubleGo&&p.pos===0&&n>0){p.cash+=200;log(`${p.name} 剛好落 START，House Rule 額外收 $200。`);msg(`${p.name} Double GO！額外 +$200。`);beep(900,.1,'triangle')}
+  };
+
+  const legacyDrawCard=drawCard;
+  drawCard=async function(type){
+    ensureV7State();
+    const p=state.players[state.current],before=p.cash;
+    await legacyDrawCard(type);
+    if(state.v7.rules.freeParking&&p.cash<before){state.v7.freePot+=(before-p.cash);save()}
+  };
+
+  const legacyResolve=resolve;
+  resolve=async function(i){
+    await legacyResolve(i);
+    ensureV7State();
+    if(SPACES[i]?.type==='free'&&state.v7.rules.freeParking&&(state.v7.freePot||0)>0){
+      const p=state.players[state.current],win=state.v7.freePot;p.cash+=win;state.v7.freePot=0;
+      msg(`${p.name} 拎到 Free Parking Jackpot $${win}！`);log(`${p.name} 免費泊車獎金 +$${win}。`);beep(980,.12,'triangle');renderPlayers();save();
     }
-  }
+  };
 
-  function addPressFx(btn){
-    if(!btn) return;
-    btn.addEventListener('pointerdown',()=>btn.classList.add('btn-press'));
-    const clear=()=>btn.classList.remove('btn-press');
-    btn.addEventListener('pointerup',clear);
-    btn.addEventListener('pointercancel',clear);
-    btn.addEventListener('mouseleave',clear);
-  }
-  [heroBtn,rollBtn,q('#buyBtn'),q('#auctionBtn'),q('#buildBtn'),q('#endTurnBtn'),q('#assetsBtn'),q('#tradeBtn'),q('#playersBtn'),q('#settingsBtn'),q('#newGameBtn'),startBtn].forEach(addPressFx);
+  const legacyEnd=endTurn;
+  endTurn=function(){
+    if(!state?.rolled||state.winner)return;
+    ensureV7State();
+    state.v7.turns++;
+    legacyEnd();
+    if(state.v7.mode==='quick'&&!state.winner&&state.v7.turns>=state.v7.maxTurns){
+      const alive=state.players.filter(p=>!p.bankrupt);
+      alive.sort((a,b)=>netWorth(b)-netWorth(a));
+      const winner=alive[0]; state.winner=winner.name;
+      q('#winnerName').textContent=winner.name;
+      q('#winnerModal').showModal();
+      msg(`Quick Mode 完成：${winner.name} 以最高總資產勝出。`);
+      log(`${winner.name} Quick Mode 勝出，總資產 ~$${netWorth(winner)}。`);save();render();
+    }
+    syncStage();
+  };
+  if(endBtn) endBtn.onclick=endTurn;
 
-  // Keep app.js's original roll handler untouched. The large button delegates to it.
   heroBtn?.addEventListener('click',()=>{
-    const setupVisible=q('#setupPanel') && !q('#setupPanel').classList.contains('hidden');
-    if(setupVisible){toast('請先開始遊戲');return}
-    if(!rollBtn){toast('搵唔到擲骰按鈕');return}
-    if(rollBtn.disabled){toast('今個回合暫時唔可以再擲骰');return}
-    heroBtn.classList.add('v5-rolling');
-    try{rollBtn.click()}catch(err){console.error('Hero dice delegation failed',err);toast('擲骰失敗，請重新整理')}
-    setTimeout(()=>{heroBtn.classList.remove('v5-rolling');syncStage()},650);
+    if(setup&&!setup.classList.contains('hidden')){toast('請先開始遊戲');return}
+    if(!rollBtn||rollBtn.disabled)return;
+    heroBtn.classList.add('v5-rolling');rollBtn.click();
+    setTimeout(()=>{heroBtn.classList.remove('v5-rolling');diceBurst();syncStage()},620);
   });
+  rollBtn?.addEventListener('click',()=>setTimeout(()=>{diceBurst();syncStage()},620));
 
-  window.addEventListener('error',event=>{
-    console.error('Runtime error',event.error||event.message);
-    const m=q('#message');
-    if(m) m.textContent=`系統錯誤：${event.message||'未知錯誤'}`;
-  });
-  window.addEventListener('unhandledrejection',event=>{
-    console.error('Unhandled promise rejection',event.reason);
-    const m=q('#message');
-    if(m) m.textContent='系統錯誤：非同步操作失敗';
-  });
+  const pressBtns=[heroBtn,rollBtn,q('#buyBtn'),q('#auctionBtn'),q('#buildBtn'),endBtn,q('#assetsBtn'),q('#tradeBtn'),q('#playersBtn'),q('#settingsBtn'),q('#newGameBtn'),startBtn];
+  pressBtns.forEach(btn=>{if(!btn)return;btn.addEventListener('pointerdown',()=>btn.classList.add('btn-press'));const clear=()=>btn.classList.remove('btn-press');btn.addEventListener('pointerup',clear);btn.addEventListener('pointercancel',clear)});
 
-  const obs=new MutationObserver(syncStage);
-  if(q('#gamePanel')) obs.observe(q('#gamePanel'),{subtree:true,childList:true,attributes:true,attributeFilter:['class','disabled']});
-  if(q('#setupPanel')) obs.observe(q('#setupPanel'),{attributes:true,attributeFilter:['class']});
-
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.getRegistration().then(reg=>reg?.update()).catch(()=>{});
-    navigator.serviceWorker.addEventListener('controllerchange',()=>toast('V0.6.2 已更新'));
+  function runSelfCheck(){
+    const errors=[];
+    try{if(SPACES.length!==BOARD_COORDS.length)errors.push('棋盤格數不一致')}catch{errors.push('棋盤資料未載入')}
+    if(new Set(BOARD_COORDS.map(x=>x.join(','))).size!==25)errors.push('棋盤座標重複');
+    ['#startGameBtn','#rollBtn','#endTurnBtn','#assetsBtn','#tradeBtn','#playersBtn'].forEach(id=>{if(!q(id))errors.push(`缺少 ${id}`)});
+    const st=q('#qaStatus');if(st){st.textContent=errors.length?`QA：${errors.length} 個問題`:'QA：V0.7 核心檢查通過';st.className=`qa-status ${errors.length?'qa-bad':'qa-good'}`}
+    if(errors.length)console.error('V0.7 QA',errors);
   }
 
-  runSelfCheck();
-  recoverLoadedGame();
-  syncStage();
+  window.addEventListener('error',e=>{console.error('Runtime error',e.error||e.message);if(q('#message'))q('#message').textContent=`系統錯誤：${e.message||'未知錯誤'}`});
+  const obs=new MutationObserver(syncStage);if(game)obs.observe(game,{subtree:true,childList:true,attributes:true,attributeFilter:['class','disabled']});
+
+  if('serviceWorker'in navigator){navigator.serviceWorker.getRegistration().then(r=>r?.update()).catch(()=>{});navigator.serviceWorker.addEventListener('controllerchange',()=>toast('V0.7 已更新'))}
+
+  try{if(state?.players?.length){ensureV7State();render();save()}}catch(err){console.error('V0.7 saved-game recovery',err)}
+  runSelfCheck();syncStage();
 })();
