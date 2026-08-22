@@ -1,24 +1,29 @@
-# Adelaide Tycoon V0.8
+# Adelaide Tycoon V0.9
 
 A local multiplayer, pass-and-play PWA board game designed for one phone and 2–6 players.
 
-## V0.8 highlights
+## V0.9 highlights
 
-- Turn phase indicator: ROLL → RESOLVE → MANAGE → END
-- Large property deed decision card when landing on an unowned property
-- Buy / auction decisions surfaced immediately after movement settles
-- Floating cash gain / loss animations after each roll
-- End-of-turn summary before handing the phone to the next player
-- Optional $50 bail action while in jail before rolling
-- Retains V0.7.1 stability fixes, Quick Mode, House Rules, custom tokens and HUD
-- PWA cache updated to `adelaide-tycoon-v08`
+- Commercial mobile-board-game style dice presentation with larger physical-feeling dice, result pop and haptics
+- Stronger token travel feel while moving square-by-square
+- Landing impact animation and board shockwave
+- Property acquisition celebration with `OWNED!` banner and particles
+- Rent payment banner plus cash-loss feedback
+- House / landmark upgrade celebration and tile animation
+- Stronger pass-the-phone turn reveal
+- Respects `prefers-reduced-motion` and the existing fast-animation setting
+- Animation lives in its own `v9.js` / `v9.css` layer so the core dice and game rules stay isolated
+- Retains V0.8 turn phases, property deed card, cash flow, turn summary and jail bail action
+- Retains V0.7.1 stability fixes, Quick Mode, House Rules, custom tokens and 25-space board QA
+- PWA cache updated to `adelaide-tycoon-v09`
 
-## Design reference
+## Animation reference
 
-V0.8 takes mobile UX inspiration from current digital MONOPOLY-style games: the core loop stays focused on rolling around the board, while important landings become clear, high-feedback moments. It keeps Adelaide Tycoon branding, locations and original UI rather than copying licensed artwork or characters.
+V0.9 takes animation principles from current commercial digital MONOPOLY-style games: a living board, strong dice feedback, clear landing moments, animated construction and obvious reward / loss feedback. Adelaide Tycoon keeps original Adelaide branding, locations and UI assets rather than copying licensed artwork or characters.
 
 ## Version history
 
+- **V0.9** — dice physics feel, token travel, landing impact, buy/rent/build celebration animations
 - **V0.8** — turn phases, deed decision cards, cash animations, turn summary, jail bail action
 - **V0.7.1** — stability fix for observer loop, Quick Mode ending and Free Parking Jackpot calculation
 - **V0.7** — Quick Mode, House Rules, tokens, turn HUD and richer animation
