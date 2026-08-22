@@ -1,10 +1,10 @@
 {
-  "name":"Adelaide Tycoon V1.2",
-  "short_name":"Tycoon V1.2",
-  "description":"V1.2：加入更接近實體大富翁的 Classic Rules，包括雙骰再行、三次雙骰入獄、Go To Jail、強制拍賣、酒店與破產資產轉移。",
-  "start_url":"./?v=12",
+  "name":"Adelaide Tycoon V1.3",
+  "short_name":"Tycoon V1.3",
+  "description":"V1.3：參考商業手機大富翁風格，加入亮藍遊戲 HUD、立體玩家卡、中央棋盤、奶油色地產卡與紅色大型擲骰鍵，同時保留 V1.2 Classic Rules。",
+  "start_url":"./?v=13",
   "display":"standalone",
-  "background_color":"#071426",
-  "theme_color":"#071426",
+  "background_color":"#1478c9",
+  "theme_color":"#1478c9",
   "lang":"zh-HK"
 }
