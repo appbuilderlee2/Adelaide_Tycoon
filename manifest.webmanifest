@@ -1,8 +1,8 @@
 {
-  "name":"Adelaide Tycoon V1.0",
-  "short_name":"Tycoon V1.0",
-  "description":"V1.0：重新設計成更接近商業手機桌遊的棋盤優先介面、中央擲骰鍵、底部操作 Dock 與 contextual property actions。",
-  "start_url":"./?v=10",
+  "name":"Adelaide Tycoon V1.1",
+  "short_name":"Tycoon V1.1",
+  "description":"V1.1：遊戲開始後使用 One-Screen Mode，一頁睇晒玩家、回合、棋盤、地產操作、訊息與底部操作 Dock。",
+  "start_url":"./?v=11",
   "display":"standalone",
   "background_color":"#071426",
   "theme_color":"#071426",
