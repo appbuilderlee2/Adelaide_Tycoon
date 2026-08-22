@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#10254b" />
+  <meta name="theme-color" content="#0b1830" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Adelaide Tycoon V0.6.2</title>
-  <link rel="manifest" href="manifest.webmanifest?v=062" />
-  <link rel="stylesheet" href="styles.css?v=062" />
-  <link rel="stylesheet" href="v5.css?v=062" />
+  <title>Adelaide Tycoon V0.7</title>
+  <link rel="manifest" href="manifest.webmanifest?v=07" />
+  <link rel="stylesheet" href="styles.css?v=07" />
+  <link rel="stylesheet" href="v5.css?v=07" />
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
       <div>
-        <div class="version">V0.6.2 · 本地多人 PWA</div>
+        <div class="version">V0.7 · 本地多人 PWA</div>
         <h1>Adelaide Tycoon</h1>
       </div>
       <div class="top-actions">
@@ -27,15 +27,15 @@
     <section class="hero-panel">
       <div class="hero-copy">
         <div class="hero-kicker">
-          <span class="version-badge">V0.6.2</span>
-          <span class="hero-tag">QA Hotfix · 棋盤修復</span>
+          <span class="version-badge">V0.7</span>
+          <span class="hero-tag">Mobile Board Game Update</span>
         </div>
         <h2>一部電話，大家輪流玩嘅 Adelaide 大富翁</h2>
-        <p>已修正 25 格棋盤座標問題，並加入啟動自檢，避免按鈕／棋盤錯誤靜默失敗。</p>
+        <p>Quick Mode、House Rules、自訂棋子、回合 HUD，同更強骰仔與棋盤動畫。</p>
         <div class="hero-status-row">
-          <div class="hero-status-card"><strong>2–6 人</strong><span>本地多人</span></div>
-          <div class="hero-status-card"><strong>PWA</strong><span>可加入主畫面</span></div>
-          <div class="hero-status-card"><strong>自動儲存</strong><span>即開即玩</span></div>
+          <div class="hero-status-card"><strong>2–6 人</strong><span>Pass & Play</span></div>
+          <div class="hero-status-card"><strong>Classic / Quick</strong><span>兩種節奏</span></div>
+          <div class="hero-status-card"><strong>House Rules</strong><span>自訂玩法</span></div>
         </div>
         <div id="qaStatus" class="qa-status">QA：檢查中</div>
       </div>
@@ -99,7 +99,7 @@
     <label class="setting-row"><span><strong>快速動畫</strong><small>縮短棋子逐格移動時間</small></span><input id="fastAnimationToggle" type="checkbox"></label>
   </div></div></dialog>
   <dialog id="winnerModal"><div class="winner"><div class="winner-icon">🏆</div><div class="muted">最後勝利者</div><h2 id="winnerName">—</h2><p>其他玩家已經破產，恭喜勝出 Adelaide Tycoon！</p><div class="winner-actions"><button id="closeWinnerBtn" class="secondary-btn">查看棋盤</button><button id="restartWinnerBtn" class="primary-btn">再玩一局</button></div></div></dialog>
-  <script src="app.js?v=062"></script>
-  <script src="v5.js?v=062"></script>
+  <script src="app.js?v=07"></script>
+  <script src="v5.js?v=07"></script>
 </body>
 </html>
