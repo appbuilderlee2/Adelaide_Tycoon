@@ -50,12 +50,16 @@
       if(!p) return;
       card.dataset.player=i;
       const name=card.querySelector('.name');
-      name?.querySelector('.v13-star')?.remove();
-      if(name&&i===state.current&&!p.bankrupt){
-        const star=document.createElement('span');
-        star.className='v13-star';
-        star.textContent=' ★';
-        name.appendChild(star);
+      if(!name) return;
+      const star=name.querySelector('.v13-star');
+      const shouldStar=i===state.current&&!p.bankrupt;
+      if(shouldStar&&!star){
+        const el=document.createElement('span');
+        el.className='v13-star';
+        el.textContent=' ★';
+        name.appendChild(el);
+      }else if(!shouldStar&&star){
+        star.remove();
       }
     });
   }
