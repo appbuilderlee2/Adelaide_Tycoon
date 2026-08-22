@@ -50,34 +50,38 @@
       if(!p) return;
       card.dataset.player=i;
       const name=card.querySelector('.name');
-      if(name&&i===state.current&&!p.bankrupt&&!name.querySelector('.v13-star')){
-        const star=document.createElement('span');star.className='v13-star';star.textContent=' ★';name.appendChild(star);
+      name?.querySelector('.v13-star')?.remove();
+      if(name&&i===state.current&&!p.bankrupt){
+        const star=document.createElement('span');
+        star.className='v13-star';
+        star.textContent=' ★';
+        name.appendChild(star);
       }
     });
   }
 
   function syncPropertyButtons(){
     const buy=q('#buyBtn'), auction=q('#auctionBtn'), build=q('#buildBtn'), end=q('#endTurnBtn');
-    if(buy&&!buy.classList.contains('hidden')) buy.textContent=buy.textContent.includes('$')?buy.textContent:`💵 ${buy.textContent}`;
-    if(auction&&!auction.classList.contains('hidden')&&!auction.textContent.includes('🔨')) auction.textContent=`🔨 ${auction.textContent}`;
-    if(build&&!build.classList.contains('hidden')&&!build.textContent.includes('🏠')) build.textContent=`🏠 ${build.textContent}`;
-    if(end&&!end.classList.contains('hidden')&&!end.textContent.includes('✓')) end.textContent=`✓ ${end.textContent}`;
+    if(buy&&!buy.classList.contains('hidden')&&!buy.textContent.startsWith('💵')) buy.textContent=`💵 ${buy.textContent}`;
+    if(auction&&!auction.classList.contains('hidden')&&!auction.textContent.startsWith('🔨')) auction.textContent=`🔨 ${auction.textContent}`;
+    if(build&&!build.classList.contains('hidden')&&!build.textContent.startsWith('🏠')) build.textContent=`🏠 ${build.textContent}`;
+    if(end&&!end.classList.contains('hidden')&&!end.textContent.startsWith('✓')) end.textContent=`✓ ${end.textContent}`;
   }
 
-  function sync(){
-    syncTopStats();
-    syncPlayerCards();
-    syncPropertyButtons();
-  }
+  function sync(){syncTopStats();syncPlayerCards();syncPropertyButtons()}
 
   ensureTopStats();
   ensureMoreButton();
   sync();
 
-  const game=q('#gamePanel');
-  if(game){
-    new MutationObserver(()=>requestAnimationFrame(sync)).observe(game,{subtree:true,childList:true,attributes:true,attributeFilter:['class','disabled']});
-  }
+  const playersStrip=q('#playersStrip');
+  if(playersStrip) new MutationObserver(()=>requestAnimationFrame(()=>{syncPlayerCards();syncTopStats()})).observe(playersStrip,{childList:true});
+  ['#rollBtn','#endTurnBtn','#buyBtn','#auctionBtn','#buildBtn'].forEach(sel=>{
+    const el=q(sel);
+    if(el) new MutationObserver(()=>requestAnimationFrame(()=>{syncPropertyButtons();syncTopStats()})).observe(el,{attributes:true,attributeFilter:['class','disabled']});
+  });
+  const setup=q('#setupPanel');
+  if(setup) new MutationObserver(()=>requestAnimationFrame(syncTopStats)).observe(setup,{attributes:true,attributeFilter:['class']});
 
   if('serviceWorker'in navigator){navigator.serviceWorker.getRegistration().then(r=>r?.update()).catch(()=>{})}
 
