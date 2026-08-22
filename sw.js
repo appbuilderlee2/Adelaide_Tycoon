@@ -1,5 +1,5 @@
-const CACHE='adelaide-tycoon-v08';
-const ASSETS=['./','./index.html','./styles.css','./v5.css','./v8.css','./app.js','./v5.js','./v8.js','./manifest.webmanifest'];
+const CACHE='adelaide-tycoon-v09';
+const ASSETS=['./','./index.html','./styles.css','./v5.css','./v8.css','./v9.css','./app.js','./v5.js','./v8.js','./v9.js','./manifest.webmanifest'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(
