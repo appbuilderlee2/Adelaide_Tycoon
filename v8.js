@@ -86,6 +86,7 @@
         state.players.forEach((p,i)=>floatCash(i,p.cash-(before[i]??p.cash)));
         setPhase('manage');
         showDeedIfNeeded();
+        jailAction();
       }else setPhase('resolve');
     },100);
   }
@@ -100,7 +101,7 @@
   buyBtn?.addEventListener('click',()=>setTimeout(()=>{updatePhase();const p=current();if(p)floatCash(state.current,-(SPACES[p.pos]?.price||0))},30));
 
   endBtn?.addEventListener('click',e=>{
-    if(bypassEnd){bypassEnd=false;deedOpenFor=null;setTimeout(()=>setPhase('roll'),60);return}
+    if(bypassEnd){bypassEnd=false;deedOpenFor=null;setTimeout(()=>{setPhase('roll');jailAction()},60);return}
     if(!state?.rolled||state.winner) return;
     e.preventDefault();e.stopImmediatePropagation();
     setPhase('end');
@@ -121,8 +122,13 @@
     q('#v8PhaseBar')?.insertAdjacentElement('afterend',b);
   }
 
-  const phaseObserver=new MutationObserver(()=>{updatePhase();jailAction()});
-  if(q('#gamePanel')) phaseObserver.observe(q('#gamePanel'),{subtree:true,attributes:true,attributeFilter:['class','disabled']});
+  // Observe only the controls whose state represents the turn. Do not observe
+  // the whole game subtree: phase-bar class changes must never retrigger sync.
+  const stateObserver=new MutationObserver(()=>{updatePhase();jailAction()});
+  if(rollBtn) stateObserver.observe(rollBtn,{attributes:true,attributeFilter:['disabled','class']});
+  if(endBtn) stateObserver.observe(endBtn,{attributes:true,attributeFilter:['class']});
+  const setup=q('#setupPanel');
+  if(setup) stateObserver.observe(setup,{attributes:true,attributeFilter:['class']});
 
   window.addEventListener('error',e=>console.error('V0.8 runtime',e.error||e.message));
   ensureUi();updatePhase();jailAction();
