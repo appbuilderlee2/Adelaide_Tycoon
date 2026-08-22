@@ -3,11 +3,11 @@
 body{background:linear-gradient(180deg,#071426 0 150px,#edf1ee 150px 100%)}
 .app-shell{max-width:760px;padding-bottom:calc(92px + var(--v10-safe))}
 .topbar{position:sticky;top:0;z-index:30;border-radius:0 0 20px 20px;padding:10px 12px;background:rgba(7,20,38,.94);backdrop-filter:blur(16px);box-shadow:0 8px 26px rgba(0,0,0,.18)}
-.topbar h1{font-size:18px;margin:0}.topbar .version{font-size:10px;margin:0 0 2px}.top-actions{gap:6px}.top-actions .ghost-btn{width:38px;height:38px;padding:0;border-radius:12px;font-size:0}.top-actions .ghost-btn::first-letter{font-size:18px}
+.topbar h1{font-size:18px;margin:0}.topbar .version{font-size:10px;margin:0 0 2px}.top-actions{gap:6px}.top-actions .ghost-btn{width:38px;height:38px;padding:0;border-radius:12px;font-size:0}.top-actions #settingsBtn::after{content:'⚙️';font-size:18px}.top-actions #newGameBtn::after{content:'🆕';font-size:18px}
 body.v10-playing .hero-panel{display:none}
 body.v10-playing .topbar{margin-bottom:8px}
 body.v10-playing #gamePanel{display:flex;flex-direction:column;gap:8px}
-body.v10-playing #playersStrip{order:1}.v7-turn-hud{order:2}.status-row{order:3}.board-wrap{order:4}.property-panel{order:5}.message{order:6}.log-panel{order:7}.bottom-actions{order:8}
+body.v10-playing #playersStrip{order:1}.v7-turn-hud{order:2}#v8PhaseBar{order:3}.status-row{order:4}#v8Bail{order:5}.board-wrap{order:6}.property-panel{order:7}.message{order:8}.log-panel{order:9}.bottom-actions{order:10}
 .players-strip{display:flex;overflow-x:auto;gap:7px;padding:0 2px 4px;scrollbar-width:none}.players-strip::-webkit-scrollbar{display:none}.player-card{min-width:118px;padding:8px 9px;border-radius:15px;background:#fff;box-shadow:0 5px 16px rgba(11,28,47,.08)}.player-card.active{min-width:132px;box-shadow:0 0 0 2px var(--v10-blue),0 8px 20px rgba(25,134,255,.16)}.player-card .net{display:none}.player-card .cash{font-size:12px}.mini-pawn{font-size:20px}
 .v7-turn-hud{margin:0;border-radius:17px;padding:9px 11px;box-shadow:none}.v7-current-token{width:40px;height:40px;font-size:24px}.v7-hud-copy strong{font-size:16px}.v7-hud-copy span{font-size:10px}
 .status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.status-row>div{padding:7px 6px;border-radius:12px;box-shadow:none}.status-row .muted{font-size:8px}.status-row strong{font-size:10.5px}.dice-pair{font-size:16px}
