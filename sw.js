@@ -1,4 +1,4 @@
-const CACHE='adelaide-tycoon-v061';
+const CACHE='adelaide-tycoon-v062';
 const ASSETS=['./','./index.html','./styles.css','./v5.css','./app.js','./v5.js','./manifest.webmanifest'];
 
 self.addEventListener('install',event=>{
@@ -22,8 +22,10 @@ self.addEventListener('fetch',event=>{
   event.respondWith(
     fetch(event.request,{cache:'no-store'})
       .then(response=>{
-        const copy=response.clone();
-        caches.open(CACHE).then(cache=>cache.put(event.request,copy));
+        if(response && response.ok){
+          const copy=response.clone();
+          caches.open(CACHE).then(cache=>cache.put(event.request,copy));
+        }
         return response;
       })
       .catch(()=>caches.match(event.request).then(hit=>hit||caches.match('./index.html')))
