@@ -1,0 +1,41 @@
+/* Adelaide Tycoon V1.3.1 — one-screen layout hotfix */
+body.v10-playing .app-shell{height:100dvh!important;display:flex!important;flex-direction:column!important;padding-bottom:calc(78px + env(safe-area-inset-bottom))!important}
+body.v10-playing #gamePanel{flex:1 1 auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;gap:4px!important;overflow:hidden!important}
+
+body.v10-playing .v13-top-stats{order:1!important;flex:0 0 32px!important;height:32px!important;min-height:32px!important}
+body.v10-playing #playersStrip{order:2!important;flex:0 0 52px!important;height:52px!important;min-height:52px!important}
+body.v10-playing .player-card{height:48px!important;min-height:48px!important}
+body.v10-playing .v7-turn-hud{order:3!important;flex:0 0 48px!important;height:48px!important;min-height:48px!important}
+body.v10-playing #v8PhaseBar{order:4!important;flex:0 0 23px!important;height:23px!important;min-height:23px!important}
+body.v10-playing #v12RulesBadge{display:none!important}
+body.v10-playing #v8Bail{order:5!important;flex:0 0 25px!important;height:25px!important;min-height:25px!important}
+
+body.v10-playing .board-wrap{order:6!important;flex:1 1 280px!important;min-height:190px!important;height:auto!important;width:100%!important;margin:0!important;padding:5px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important}
+body.v10-playing .board{height:100%!important;width:auto!important;max-height:100%!important;max-width:100%!important;aspect-ratio:1/1!important;flex:0 1 auto!important;transform:none!important}
+
+body.v10-playing .property-panel{order:7!important;flex:0 0 auto!important;min-height:72px!important;max-height:86px!important;height:auto!important;margin:0!important;padding:7px 9px!important;overflow:hidden!important}
+body.v10-playing .property-panel h2{font-size:15px!important;line-height:1.05!important;margin:1px 0!important}
+body.v10-playing .property-actions{margin-top:4px!important}
+body.v10-playing .property-actions button{min-height:30px!important;height:30px!important;padding:3px 7px!important;font-size:9px!important}
+body.v10-playing .message{order:8!important;flex:0 0 24px!important;height:24px!important;min-height:24px!important;margin:0!important;padding:4px 8px!important;line-height:14px!important}
+body.v10-playing .log-panel{display:none!important}
+body.v10-playing .bottom-actions{order:9!important}
+
+@media(max-height:760px){
+  body.v10-playing .topbar{height:46px!important;min-height:46px!important}
+  body.v10-playing .v13-top-stats{flex-basis:28px!important;height:28px!important;min-height:28px!important}
+  body.v10-playing #playersStrip{flex-basis:45px!important;height:45px!important;min-height:45px!important}
+  body.v10-playing .player-card{height:41px!important;min-height:41px!important}
+  body.v10-playing .v7-turn-hud{flex-basis:42px!important;height:42px!important;min-height:42px!important}
+  body.v10-playing #v8PhaseBar{flex-basis:21px!important;height:21px!important;min-height:21px!important}
+  body.v10-playing .board-wrap{flex-basis:220px!important;min-height:160px!important}
+  body.v10-playing .property-panel{min-height:62px!important;max-height:72px!important;padding:5px 7px!important}
+  body.v10-playing .property-actions button{height:27px!important;min-height:27px!important}
+  body.v10-playing .message{flex-basis:22px!important;height:22px!important;min-height:22px!important}
+}
+
+@media(max-width:430px){
+  body.v10-playing .player-card{min-width:91px!important}
+  body.v10-playing .player-card.active{min-width:101px!important}
+  body.v10-playing .board-wrap{padding:4px!important}
+}
