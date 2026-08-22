@@ -20,7 +20,6 @@
 
   // Critical QA hotfix: app.js defines 25 spaces but its original grid() only
   // returned 20 coordinates. Replace it before the user starts a new game.
-  // Route uses a 7x7 board: 24 perimeter cells + one inner transition cell.
   const BOARD_COORDS=[
     [7,1],[6,2],[7,2],[7,3],[7,4],[7,5],[7,6],[7,7],
     [6,7],[5,7],[4,7],[3,7],[2,7],[1,7],
@@ -43,16 +42,13 @@
       if(typeof SPACES==='undefined') errors.push('SPACES 未載入');
       else if(SPACES.length!==BOARD_COORDS.length) errors.push(`格數 ${SPACES.length} 與座標 ${BOARD_COORDS.length} 不一致`);
     }catch{errors.push('無法讀取棋盤資料')}
-
     const unique=new Set(BOARD_COORDS.map(([r,c])=>`${r},${c}`));
     if(unique.size!==BOARD_COORDS.length) errors.push('棋盤座標有重複');
-
     ['#startGameBtn','#rollBtn','#buyBtn','#endTurnBtn','#assetsBtn','#tradeBtn','#playersBtn'].forEach(id=>{
       if(!q(id)) errors.push(`缺少 ${id}`);
     });
     if(rollBtn && typeof rollBtn.onclick!=='function') errors.push('核心擲骰 handler 未綁定');
     if(startBtn && typeof startBtn.onclick!=='function') errors.push('開始遊戲 handler 未綁定');
-
     const status=q('#qaStatus');
     if(status){
       status.textContent=errors.length?`QA：${errors.length} 個問題`:'QA：核心檢查通過';
@@ -68,12 +64,28 @@
     return true;
   }
 
+  function recoverLoadedGame(){
+    try{
+      if(typeof state!=='undefined' && state?.players?.length && q('#gamePanel') && !q('#gamePanel').classList.contains('hidden')){
+        // app.js may have tried to render a saved game before the grid patch existed.
+        render();
+        msg(`已修復並載入上次遊戲。現在到 ${state.players[state.current].name}。`);
+        save();
+        return true;
+      }
+    }catch(err){
+      console.error('Saved-game recovery failed',err);
+      const m=q('#message');
+      if(m) m.textContent='舊存檔載入失敗，請按「新遊戲」重新開始。';
+    }
+    return false;
+  }
+
   function syncStage(){
     const turn=(q('#turnName')?.textContent || '下一位玩家').trim();
     const setupVisible=q('#setupPanel') && !q('#setupPanel').classList.contains('hidden');
     const rolled=!q('#endTurnBtn')?.classList.contains('hidden');
     const blocked=setupVisible || rolled || !!rollBtn?.disabled;
-
     if(q('#rollStageName')) q('#rollStageName').textContent=setupVisible?'先建立玩家':`${turn}，到你喇`;
     if(q('#heroTurnChip')) q('#heroTurnChip').textContent=setupVisible?'未開始':rolled?'已擲骰':'未擲骰';
     if(q('#rollStageHint')) q('#rollStageHint').textContent=setupVisible?'開始遊戲後就可以擲骰':rolled?'今個回合已擲骰，請完成操作後按「結束回合」':'撳大型骰仔開始今個回合';
@@ -91,7 +103,6 @@
     btn.addEventListener('pointercancel',clear);
     btn.addEventListener('mouseleave',clear);
   }
-
   [heroBtn,rollBtn,q('#buyBtn'),q('#auctionBtn'),q('#buildBtn'),q('#endTurnBtn'),q('#assetsBtn'),q('#tradeBtn'),q('#playersBtn'),q('#settingsBtn'),q('#newGameBtn'),startBtn].forEach(addPressFx);
 
   // Keep app.js's original roll handler untouched. The large button delegates to it.
@@ -101,19 +112,10 @@
     if(!rollBtn){toast('搵唔到擲骰按鈕');return}
     if(rollBtn.disabled){toast('今個回合暫時唔可以再擲骰');return}
     heroBtn.classList.add('v5-rolling');
-    try{
-      rollBtn.click();
-    }catch(err){
-      console.error('Hero dice delegation failed',err);
-      toast('擲骰失敗，請重新整理');
-    }
-    setTimeout(()=>{
-      heroBtn.classList.remove('v5-rolling');
-      syncStage();
-    },650);
+    try{rollBtn.click()}catch(err){console.error('Hero dice delegation failed',err);toast('擲骰失敗，請重新整理')}
+    setTimeout(()=>{heroBtn.classList.remove('v5-rolling');syncStage()},650);
   });
 
-  // Surface uncaught runtime errors instead of silently failing.
   window.addEventListener('error',event=>{
     console.error('Runtime error',event.error||event.message);
     const m=q('#message');
@@ -135,5 +137,6 @@
   }
 
   runSelfCheck();
+  recoverLoadedGame();
   syncStage();
 })();
