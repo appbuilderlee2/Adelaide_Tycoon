@@ -1,10 +1,10 @@
 {
-  "name":"Adelaide Tycoon V1.3",
-  "short_name":"Tycoon V1.3",
-  "description":"V1.3：參考商業手機大富翁風格，加入亮藍遊戲 HUD、立體玩家卡、中央棋盤、奶油色地產卡與紅色大型擲骰鍵，同時保留 V1.2 Classic Rules。",
-  "start_url":"./?v=13",
+  "name":"Adelaide Tycoon V1.4",
+  "short_name":"Tycoon V1.4",
+  "description":"V1.4：3D 卡通 mobile board game 風格，加入斜角城市棋盤、Q版棋子動畫、浮空骰仔、中央城市場景與大型 GO 擲骰鍵，同時保留 V1.2 Classic Rules。",
+  "start_url":"./?v=14",
   "display":"standalone",
-  "background_color":"#1478c9",
-  "theme_color":"#1478c9",
+  "background_color":"#208bd8",
+  "theme_color":"#208bd8",
   "lang":"zh-HK"
 }
