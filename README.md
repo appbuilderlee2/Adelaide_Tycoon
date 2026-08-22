@@ -1,30 +1,25 @@
-# Adelaide Tycoon V1.0
+# Adelaide Tycoon V1.1
 
 A local multiplayer, pass-and-play PWA board game designed for one phone and 2–6 players.
 
-## V1.0 mobile game UI redesign
+## V1.1 One-Screen Mode
 
-- Board-first gameplay layout: the large landing hero is hidden once a game starts so the board becomes the primary surface.
-- Compact sticky game header for title, settings and new game.
-- Current players are shown as horizontal compact chips instead of large stacked cards.
-- Current-player HUD remains directly above the board.
-- Status information is compressed into a small four-cell strip.
-- Bottom navigation is redesigned as a mobile-game dock.
-- Dice is the dominant central action, raised above Assets / Trade / Players.
-- Property actions are consolidated below the board as contextual controls.
-- Buy and End Turn become full-width primary actions when relevant.
-- Safe-area spacing is included for iPhone Home Screen / PWA use.
-- Existing V0.9 animation layer remains intact.
-- Existing V0.8 turn phases, deed card, money feedback and turn summary remain intact.
-- Existing V0.7.1 stability fixes, Quick Mode, House Rules, custom tokens and 25-space board QA remain intact.
-- PWA cache updated to `adelaide-tycoon-v10`.
-
-## Design reference
-
-V1.0 takes layout principles from current commercial digital MONOPOLY-style mobile games: the board dominates the play surface, the roll action has the highest visual priority, secondary actions live in a compact bottom dock, and property decisions appear contextually near the board. Adelaide Tycoon keeps its own Adelaide branding, locations and original UI rather than copying licensed artwork or characters.
+- Gameplay is locked to one phone viewport using `100dvh` and compact responsive sizing.
+- The full play state is visible without scrolling on normal portrait phones: player strip, current-turn HUD, phase indicator, board, contextual property controls, message and bottom dock.
+- Player cards are reduced to a single horizontal strip.
+- The four-cell status strip is hidden during play because its key information is already represented in the HUD and board state.
+- The board automatically uses the remaining viewport height and stays square without being clipped.
+- Property information becomes a compact one-line action strip below the board.
+- The game message becomes a single-line status bar; tap it to open the full game log in a modal.
+- The permanent game-log panel is hidden during gameplay to preserve board space.
+- Bottom roll / assets / trade / players dock is shortened while keeping Roll as the dominant action.
+- Includes an extra compact layout for phones shorter than 740px.
+- Retains V1.0 mobile-game UI, V0.9 animation layer, V0.8 turn experience and all existing game rules.
+- PWA cache updated to `adelaide-tycoon-v11`.
 
 ## Version history
 
+- **V1.1** — one-screen gameplay layout; no scrolling required on normal portrait phones
 - **V1.0** — board-first mobile UI, compact HUD, central dice button, bottom action dock, contextual property actions
 - **V0.9** — dice physics feel, token travel, landing impact, buy/rent/build celebration animations
 - **V0.8** — turn phases, deed decision cards, cash animations, turn summary, jail bail action
