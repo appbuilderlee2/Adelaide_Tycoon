@@ -1,0 +1,48 @@
+/* Adelaide Tycoon V1.3 — glossy 3D mobile board-game style */
+:root{--v13-blue:#0f70c9;--v13-blue2:#39a8f4;--v13-cream:#fff6d9;--v13-cream2:#f2dfad;--v13-red:#e7442f;--v13-red2:#b92117;--v13-gold:#ffd84b;--v13-shadow:0 8px 0 rgba(16,68,111,.22),0 14px 28px rgba(16,55,93,.22)}
+body{background:linear-gradient(180deg,#53b4f3 0,#1471c3 42%,#0b4f94 100%);font-family:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold",system-ui,sans-serif}
+body.v10-playing{overflow:hidden;background:linear-gradient(180deg,#51b6f6 0,#1680d2 48%,#0a579d 100%)}
+body.v10-playing .app-shell{height:100dvh;max-width:760px;padding:0 8px calc(82px + env(safe-area-inset-bottom));overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.02));border-left:1px solid rgba(255,255,255,.22);border-right:1px solid rgba(255,255,255,.22)}
+body.v10-playing .topbar{height:56px;min-height:56px;margin:0 -8px 5px;padding:7px 10px;border-radius:0 0 18px 18px;background:linear-gradient(180deg,#278fdf,#0b65b7);border-bottom:2px solid rgba(255,255,255,.35);box-shadow:0 5px 0 rgba(7,69,125,.34),0 8px 18px rgba(0,48,96,.22)}
+body.v10-playing .topbar h1{font-size:17px;text-shadow:0 2px 0 rgba(0,0,0,.16)}
+body.v10-playing .topbar .version{font-size:9px;color:#e6f5ff}
+.top-actions .ghost-btn{background:linear-gradient(180deg,#2f96df,#075ba7)!important;border:2px solid rgba(255,255,255,.75)!important;box-shadow:0 4px 0 #06447e,0 7px 12px rgba(0,0,0,.18)!important}
+
+.v13-top-stats{display:none}
+body.v10-playing .v13-top-stats{display:grid;grid-template-columns:1fr .8fr 1.3fr;gap:6px;height:33px;order:0}
+.v13-top-stat{display:flex;align-items:center;justify-content:center;gap:5px;border-radius:12px;padding:4px 7px;background:linear-gradient(180deg,#2e93da,#1667ad);border:1.5px solid rgba(255,255,255,.62);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 3px 0 rgba(4,75,132,.28);font-size:9px;font-weight:900;text-shadow:0 1px 0 rgba(0,0,0,.18)}
+.v13-top-stat b{color:#fff06a;font-size:11px}.v13-top-stat .icon{font-size:14px}
+
+body.v10-playing #gamePanel{gap:5px}
+.players-strip{gap:5px;padding:0 1px 2px;min-height:58px}
+.player-card{min-width:112px;padding:6px 8px;border-radius:14px;border:2px solid rgba(255,255,255,.8);background:linear-gradient(180deg,#f8e7c6,#dfc79d);box-shadow:0 4px 0 rgba(64,71,72,.28),0 7px 12px rgba(0,0,0,.12)}
+.player-card:nth-child(4n+1){background:linear-gradient(180deg,#ef664e,#c73728);color:#fff}.player-card:nth-child(4n+2){background:linear-gradient(180deg,#d6bc8d,#aa8a59)}.player-card:nth-child(4n+3){background:linear-gradient(180deg,#74c96d,#3b9a47)}.player-card:nth-child(4n+4){background:linear-gradient(180deg,#5aa9e9,#237bc4);color:#fff}
+.player-card.active{min-width:122px;box-shadow:0 0 0 3px #ffe152,0 5px 0 rgba(122,86,0,.26),0 8px 15px rgba(0,0,0,.2)}
+.player-card .name{font-weight:950;text-shadow:0 1px 0 rgba(255,255,255,.22)}.player-card .cash{font-size:13px;font-weight:950;color:#fff166;text-shadow:0 1px 0 rgba(77,59,0,.4)}
+.mini-pawn{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#fff;border:2px solid #f6d354;box-shadow:0 2px 0 rgba(0,0,0,.16);font-size:18px}
+
+.v7-turn-hud{padding:6px 9px;border-radius:14px;color:#302713;background:linear-gradient(180deg,#fffbed,#f1dfb8);border:2px solid rgba(255,255,255,.92);box-shadow:0 4px 0 rgba(129,93,42,.24),0 7px 14px rgba(0,0,0,.12)}
+.v7-current-token{width:38px;height:38px;border-radius:50%;background:#fff;border:2px solid #e7c35e;box-shadow:0 2px 0 rgba(0,0,0,.13)}.v7-hud-copy small{color:#c43a28}.v7-hud-copy strong{font-size:16px;color:#2a2114}.v7-hud-copy span{color:#6b5634;font-weight:800}.v7-hud-side b{color:#c33826}.v7-hud-side span{color:#6f5938}
+#v8PhaseBar{padding:3px;background:linear-gradient(180deg,#fff9e9,#ecd7ab);border:2px solid rgba(255,255,255,.9);box-shadow:0 3px 0 rgba(120,89,45,.18);border-radius:12px}#v8PhaseBar span{font-weight:950;color:#8b6421}#v8PhaseBar span.active{background:linear-gradient(180deg,#ed573f,#bf2b20);color:#fff;box-shadow:0 2px 0 #8f1d16}
+
+.board-wrap{padding:5px;border-radius:18px;background:linear-gradient(145deg,#9dd8ff,#3c95ce);border:2px solid rgba(255,255,255,.78);box-shadow:0 5px 0 #176caa,0 10px 20px rgba(0,47,92,.25)}
+.board{background:#dce9df;border:2px solid rgba(65,91,81,.35);box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.space{background:linear-gradient(180deg,#fffef2,#e9e7d6)!important;border:1px solid rgba(44,68,62,.42)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.85);font-weight:850}.space .label{color:#293f3c}.space .price{color:#4f625e;font-weight:900}.group-band{box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
+.space.center{background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.88),transparent 30%),linear-gradient(145deg,#e8f5e8,#b8dcbb)!important;border:0!important;box-shadow:inset 0 0 30px rgba(255,255,255,.45)}
+.center-title{font-size:18px!important;color:#174e34;text-shadow:0 2px 0 #fff}.deck{border:2px solid rgba(255,255,255,.86);box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.space.active-space{z-index:5;box-shadow:inset 0 0 0 3px #ffe253,0 0 0 2px #ff9d00,0 0 18px rgba(255,215,63,.85)!important;animation:v13Glow 1s ease-in-out infinite}@keyframes v13Glow{50%{filter:brightness(1.14) saturate(1.15)}}
+.pawn-token{font-size:16px!important;filter:drop-shadow(0 3px 1px rgba(0,0,0,.32))}
+
+.property-panel{position:relative;padding:8px 10px!important;border-radius:16px!important;background:linear-gradient(180deg,#fff9e5,#f1deb5)!important;border:2px solid rgba(255,255,255,.95)!important;box-shadow:0 5px 0 rgba(133,91,38,.25),0 8px 16px rgba(0,0,0,.13)!important}
+.property-panel.v7-property{border-top-width:7px!important}.property-panel h2{font-size:17px!important;color:#342712}.space-meta{color:#6b5638!important;font-size:9px!important;font-weight:800}.property-actions{gap:5px!important;margin-top:6px!important}.property-actions button{min-height:34px!important;border-radius:10px!important;border:2px solid rgba(255,255,255,.55)!important;font-weight:950!important;text-shadow:0 1px 0 rgba(0,0,0,.12);box-shadow:0 3px 0 rgba(0,0,0,.22)!important}.property-actions #buyBtn{background:linear-gradient(180deg,#62c83c,#2e9c1d)!important}.property-actions #auctionBtn{background:linear-gradient(180deg,#ffaf2d,#e47b08)!important;color:#fff!important}.property-actions #buildBtn{background:linear-gradient(180deg,#46b8f1,#187fc6)!important}.property-actions #endTurnBtn{background:linear-gradient(180deg,#ed5642,#bd2a20)!important}
+.message{height:27px!important;min-height:27px!important;border-radius:10px!important;background:linear-gradient(180deg,#fff9e8,#ecd8ad)!important;border:1px solid rgba(255,255,255,.9);box-shadow:0 2px 0 rgba(112,82,42,.18)!important;color:#554224!important;font-weight:850}
+
+.bottom-actions{height:78px!important;padding:8px 8px calc(8px + env(safe-area-inset-bottom))!important;grid-template-columns:1fr 1fr 1.35fr 1fr 1fr!important;gap:6px!important;background:linear-gradient(180deg,#1f84d0,#0759a7)!important;border-top:2px solid rgba(255,255,255,.6)!important;box-shadow:0 -4px 0 rgba(4,74,131,.4),0 -9px 20px rgba(0,37,78,.22)!important}
+.bottom-actions .action-btn,.v13-more-btn{height:52px!important;border-radius:13px!important;border:2px solid rgba(255,255,255,.65)!important;background:linear-gradient(180deg,#2f94dd,#0b61ad)!important;color:#fff!important;box-shadow:0 4px 0 #06447e,0 7px 12px rgba(0,0,0,.2)!important;font-weight:900!important;text-shadow:0 1px 0 rgba(0,0,0,.22)}
+.bottom-actions .action-btn span,.v13-more-btn span{font-size:21px!important}.bottom-actions #assetsBtn{order:1}.bottom-actions #tradeBtn{order:2}.bottom-actions #rollBtn{order:3;height:68px!important;margin-top:-20px!important;border-radius:50%!important;background:linear-gradient(180deg,#ff6b4e,#d52c20)!important;border:4px solid #ffe8bc!important;box-shadow:0 7px 0 #9f2018,0 12px 24px rgba(0,0,0,.36)!important}.bottom-actions #rollBtn span{font-size:29px!important}.bottom-actions #playersBtn{order:4}.v13-more-btn{order:5;padding:5px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:9px}.bottom-actions #rollBtn:active{transform:translateY(5px)!important;box-shadow:0 2px 0 #9f2018,0 6px 13px rgba(0,0,0,.28)!important}
+
+.v8-deed,.v8-summary{background:linear-gradient(180deg,#fffbed,#efddb7)!important;border:3px solid #fff!important;box-shadow:0 8px 0 rgba(111,72,35,.25),0 18px 50px rgba(0,0,0,.3)!important}.v8-deed-actions button,.v8-summary-next{border:2px solid rgba(255,255,255,.65)!important;box-shadow:0 4px 0 rgba(0,0,0,.22)!important}
+dialog::backdrop{background:rgba(4,37,72,.45);backdrop-filter:blur(4px)}
+
+@media(max-height:760px){body.v10-playing .topbar{height:48px;min-height:48px}.players-strip{min-height:50px}.player-card{min-width:96px;padding:5px 6px}.mini-pawn{width:26px;height:26px}.v7-turn-hud{padding:4px 7px}.v7-current-token{width:31px;height:31px}.property-panel{padding:6px 8px!important}.property-panel h2{font-size:14px!important}.property-actions button{min-height:30px!important}.bottom-actions{height:68px!important}.bottom-actions .action-btn,.v13-more-btn{height:44px!important}.bottom-actions #rollBtn{height:58px!important}.message{height:23px!important;min-height:23px!important}}
+@media(prefers-reduced-motion:reduce){.space.active-space{animation:none}.bottom-actions #rollBtn{transition:none}}
