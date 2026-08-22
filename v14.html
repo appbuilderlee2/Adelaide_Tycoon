@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#208bd8" />
+  <title>Adelaide Tycoon V1.4</title>
+  <style>html,body{margin:0;min-height:100%;background:#208bd8;color:#fff;font-family:system-ui,sans-serif}body{display:grid;place-items:center}.boot{padding:24px;text-align:center}.boot b{font-size:22px}.boot small{display:block;margin-top:8px;opacity:.85}</style>
+</head>
+<body>
+  <div class="boot"><b>Adelaide Tycoon V1.4</b><small>載入 Cartoon 3D Board Game…</small></div>
+  <script>
+    fetch('./index.html?force=1401',{cache:'no-store'})
+      .then(r=>{if(!r.ok) throw new Error('HTTP '+r.status); return r.text()})
+      .then(html=>{
+        html=html.replace(/\?v=14/g,'?v=1401');
+        document.open();document.write(html);document.close();
+      })
+      .catch(()=>{location.href='./index.html?force=1401'});
+  </script>
+</body>
+</html>
