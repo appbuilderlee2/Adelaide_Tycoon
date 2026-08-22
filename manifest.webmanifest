@@ -1,8 +1,8 @@
 {
-  "name":"Adelaide Tycoon V0.7.1",
-  "short_name":"Tycoon V0.7.1",
-  "description":"V0.7.1：修正 V0.7 runtime observer 循環、Quick Mode 結束流程與 Free Parking Jackpot 計算。",
-  "start_url":"./?v=071",
+  "name":"Adelaide Tycoon V0.8",
+  "short_name":"Tycoon V0.8",
+  "description":"V0.8：加入手機桌遊式回合階段、地契決策卡、金錢動畫、回合摘要與監獄保釋操作。",
+  "start_url":"./?v=08",
   "display":"standalone",
   "background_color":"#0b1830",
   "theme_color":"#0b1830",
