@@ -1,8 +1,8 @@
 {
-  "name":"Adelaide Tycoon V0.7",
-  "short_name":"Tycoon V0.7",
-  "description":"V0.7：一部電話多人輪流玩的 Adelaide 大富翁 PWA，加入 Quick Mode、House Rules、自訂棋子與手機桌遊動畫。",
-  "start_url":"./?v=07",
+  "name":"Adelaide Tycoon V0.7.1",
+  "short_name":"Tycoon V0.7.1",
+  "description":"V0.7.1：修正 V0.7 runtime observer 循環、Quick Mode 結束流程與 Free Parking Jackpot 計算。",
+  "start_url":"./?v=071",
   "display":"standalone",
   "background_color":"#0b1830",
   "theme_color":"#0b1830",
