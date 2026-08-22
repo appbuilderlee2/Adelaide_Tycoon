@@ -1,28 +1,31 @@
-# Adelaide Tycoon V0.9
+# Adelaide Tycoon V1.0
 
 A local multiplayer, pass-and-play PWA board game designed for one phone and 2–6 players.
 
-## V0.9 highlights
+## V1.0 mobile game UI redesign
 
-- Commercial mobile-board-game style dice presentation with larger physical-feeling dice, result pop and haptics
-- Stronger token travel feel while moving square-by-square
-- Landing impact animation and board shockwave
-- Property acquisition celebration with `OWNED!` banner and particles
-- Rent payment banner plus cash-loss feedback
-- House / landmark upgrade celebration and tile animation
-- Stronger pass-the-phone turn reveal
-- Respects `prefers-reduced-motion` and the existing fast-animation setting
-- Animation lives in its own `v9.js` / `v9.css` layer so the core dice and game rules stay isolated
-- Retains V0.8 turn phases, property deed card, cash flow, turn summary and jail bail action
-- Retains V0.7.1 stability fixes, Quick Mode, House Rules, custom tokens and 25-space board QA
-- PWA cache updated to `adelaide-tycoon-v09`
+- Board-first gameplay layout: the large landing hero is hidden once a game starts so the board becomes the primary surface.
+- Compact sticky game header for title, settings and new game.
+- Current players are shown as horizontal compact chips instead of large stacked cards.
+- Current-player HUD remains directly above the board.
+- Status information is compressed into a small four-cell strip.
+- Bottom navigation is redesigned as a mobile-game dock.
+- Dice is the dominant central action, raised above Assets / Trade / Players.
+- Property actions are consolidated below the board as contextual controls.
+- Buy and End Turn become full-width primary actions when relevant.
+- Safe-area spacing is included for iPhone Home Screen / PWA use.
+- Existing V0.9 animation layer remains intact.
+- Existing V0.8 turn phases, deed card, money feedback and turn summary remain intact.
+- Existing V0.7.1 stability fixes, Quick Mode, House Rules, custom tokens and 25-space board QA remain intact.
+- PWA cache updated to `adelaide-tycoon-v10`.
 
-## Animation reference
+## Design reference
 
-V0.9 takes animation principles from current commercial digital MONOPOLY-style games: a living board, strong dice feedback, clear landing moments, animated construction and obvious reward / loss feedback. Adelaide Tycoon keeps original Adelaide branding, locations and UI assets rather than copying licensed artwork or characters.
+V1.0 takes layout principles from current commercial digital MONOPOLY-style mobile games: the board dominates the play surface, the roll action has the highest visual priority, secondary actions live in a compact bottom dock, and property decisions appear contextually near the board. Adelaide Tycoon keeps its own Adelaide branding, locations and original UI rather than copying licensed artwork or characters.
 
 ## Version history
 
+- **V1.0** — board-first mobile UI, compact HUD, central dice button, bottom action dock, contextual property actions
 - **V0.9** — dice physics feel, token travel, landing impact, buy/rent/build celebration animations
 - **V0.8** — turn phases, deed decision cards, cash animations, turn summary, jail bail action
 - **V0.7.1** — stability fix for observer loop, Quick Mode ending and Free Parking Jackpot calculation
