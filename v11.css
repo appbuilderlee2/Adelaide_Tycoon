@@ -1,0 +1,85 @@
+/* Adelaide Tycoon V1.1 — one-screen gameplay */
+:root{--v11-safe:env(safe-area-inset-bottom,0px)}
+
+body.v10-playing{height:100dvh;overflow:hidden;background:#e9efeb}
+body.v10-playing .app-shell{height:100dvh;max-width:760px;margin:0 auto;padding:0 8px calc(70px + var(--v11-safe));display:flex;flex-direction:column;overflow:hidden}
+body.v10-playing .topbar{flex:0 0 46px;min-height:46px;margin:0 -8px 4px;padding:6px 10px;border-radius:0 0 16px 16px}
+body.v10-playing .topbar h1{font-size:15px;line-height:1.05}
+body.v10-playing .topbar .version{font-size:8.5px;margin-bottom:1px}
+body.v10-playing .top-actions .ghost-btn{width:32px;height:32px;border-radius:10px}
+body.v10-playing .top-actions #settingsBtn::after,body.v10-playing .top-actions #newGameBtn::after{font-size:15px}
+body.v10-playing .v10-game-chip{font-size:8px;line-height:1;margin-top:2px}
+
+body.v10-playing #gamePanel{flex:1;min-height:0;display:grid!important;grid-template-rows:42px 42px 24px minmax(0,1fr) auto 25px;gap:4px;overflow:hidden}
+body.v10-playing #playersStrip{order:1;height:42px;min-height:42px;padding:0 1px;gap:5px;overflow-x:auto;overflow-y:hidden}
+body.v10-playing .player-card{min-width:94px;height:40px;padding:4px 6px;border-radius:11px;display:flex;align-items:center}
+body.v10-playing .player-card.active{min-width:104px}
+body.v10-playing .player-top{gap:4px;align-items:center}
+body.v10-playing .mini-pawn{font-size:17px}
+body.v10-playing .player-card .name{font-size:10px;line-height:1.05;max-width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.v10-playing .player-card .cash{font-size:9px;line-height:1.05}
+
+body.v10-playing .v7-turn-hud{order:2;height:42px;min-height:42px;margin:0;padding:5px 8px;border-radius:13px;grid-template-columns:34px 1fr auto;gap:7px}
+body.v10-playing .v7-current-token{width:32px;height:32px;border-radius:10px;font-size:20px}
+body.v10-playing .v7-hud-copy small{font-size:7px}
+body.v10-playing .v7-hud-copy strong{font-size:13px;line-height:1.05}
+body.v10-playing .v7-hud-copy span{font-size:8.5px;line-height:1.05}
+body.v10-playing .v7-hud-side b{font-size:8px}
+body.v10-playing .v7-hud-side span{font-size:8px}
+
+body.v10-playing #v8PhaseBar{order:3;height:24px;min-height:24px;margin:0;padding:3px;border-radius:9px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+body.v10-playing #v8PhaseBar span{padding:3px 1px;font-size:6.8px;line-height:1;border-radius:6px}
+body.v10-playing .status-row{display:none!important}
+body.v10-playing #v8Bail{order:3;margin:0;min-height:24px;height:24px;padding:3px 8px;font-size:9px;border-radius:9px}
+
+body.v10-playing .board-wrap{order:4;min-height:0;height:100%;margin:0;padding:3px;border-radius:15px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+body.v10-playing .board{width:min(100%,calc(100dvh - 299px));height:min(100%,calc(100dvh - 299px));max-width:100%;max-height:100%;aspect-ratio:1/1;border-radius:12px;flex:0 1 auto}
+body.v10-playing .space{overflow:hidden}
+body.v10-playing .space .label{font-size:clamp(5.5px,1.55vw,8px);line-height:1.02}
+body.v10-playing .space .price{font-size:clamp(5px,1.3vw,7px)}
+body.v10-playing .space-icon{font-size:clamp(9px,2.4vw,14px)}
+body.v10-playing .pawn-token,body.v10-playing .v7-token{font-size:clamp(10px,2.7vw,15px)!important}
+body.v10-playing .center-title{font-size:clamp(12px,4vw,18px)!important}
+body.v10-playing .deck{width:25px;height:34px;font-size:14px}
+
+body.v10-playing .property-panel{order:5;margin:0;padding:6px 8px;border-radius:13px;min-height:64px;max-height:86px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;overflow:hidden}
+body.v10-playing .property-panel>div:first-child{min-width:0;padding:0}
+body.v10-playing .property-panel .muted{font-size:7.5px;line-height:1}
+body.v10-playing .property-panel h2{font-size:14px;line-height:1.05;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.v10-playing .space-meta{font-size:8.5px;line-height:1.12;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.v10-playing .v7-pot-badge{display:none}
+body.v10-playing .property-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;margin:0;max-width:178px}
+body.v10-playing .property-actions button{min-height:30px;height:30px;padding:4px 8px;border-radius:9px;font-size:9px;white-space:nowrap}
+body.v10-playing .property-actions #buyBtn,body.v10-playing .property-actions #endTurnBtn{grid-column:auto}
+
+body.v10-playing .message{order:6;height:25px;min-height:25px;margin:0;padding:5px 8px;border-radius:9px;font-size:8.5px;line-height:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.v10-playing .log-panel{display:none!important}
+
+body.v10-playing .bottom-actions{height:66px;padding:6px max(9px,env(safe-area-inset-left)) calc(5px + var(--v11-safe)) max(9px,env(safe-area-inset-right));gap:5px}
+body.v10-playing .bottom-actions .action-btn{height:48px;border-radius:13px;padding:4px 2px;font-size:8px}
+body.v10-playing .bottom-actions .action-btn span{font-size:17px}
+body.v10-playing .bottom-actions #rollBtn{height:56px;margin-top:-10px;border-radius:18px;font-size:9px;border-width:2px;box-shadow:0 6px 0 #0a57a8,0 9px 18px rgba(0,0,0,.28)}
+body.v10-playing .bottom-actions #rollBtn span{font-size:23px}
+
+/* Landscape and very short phones: prioritize the board and action strip. */
+@media(max-height:740px){
+  body.v10-playing #gamePanel{grid-template-rows:36px 36px 21px minmax(0,1fr) auto 22px;gap:3px}
+  body.v10-playing #playersStrip{height:36px;min-height:36px}
+  body.v10-playing .player-card{height:34px;min-width:86px;padding:3px 5px}
+  body.v10-playing .v7-turn-hud{height:36px;min-height:36px;padding:4px 7px}
+  body.v10-playing .v7-current-token{width:28px;height:28px;font-size:18px}
+  body.v10-playing #v8PhaseBar{height:21px;min-height:21px}
+  body.v10-playing .property-panel{min-height:54px;max-height:68px;padding:5px 7px}
+  body.v10-playing .property-actions button{height:27px;min-height:27px;padding:3px 6px;font-size:8px}
+  body.v10-playing .message{height:22px;min-height:22px;padding:4px 7px;line-height:14px}
+  body.v10-playing .board{width:min(100%,calc(100dvh - 262px));height:min(100%,calc(100dvh - 262px))}
+}
+
+@media(max-width:430px){
+  body.v10-playing .app-shell{padding-left:5px;padding-right:5px}
+  body.v10-playing .topbar{margin-left:-5px;margin-right:-5px}
+  body.v10-playing .property-panel{grid-template-columns:minmax(0,1fr) minmax(118px,44%)}
+  body.v10-playing .property-actions{max-width:none}
+  body.v10-playing .property-actions button{flex:1 1 48%;padding:3px 5px}
+  body.v10-playing .property-actions #buyBtn,body.v10-playing .property-actions #endTurnBtn{flex-basis:100%}
+}
