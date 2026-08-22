@@ -1,10 +1,10 @@
 {
-  "name":"Adelaide Tycoon V0.9",
-  "short_name":"Tycoon V0.9",
-  "description":"V0.9：加入更接近商業手機桌遊的骰仔、棋子移動、落地、買地、收租與起屋動畫。",
-  "start_url":"./?v=09",
+  "name":"Adelaide Tycoon V1.0",
+  "short_name":"Tycoon V1.0",
+  "description":"V1.0：重新設計成更接近商業手機桌遊的棋盤優先介面、中央擲骰鍵、底部操作 Dock 與 contextual property actions。",
+  "start_url":"./?v=10",
   "display":"standalone",
-  "background_color":"#0b1830",
-  "theme_color":"#0b1830",
+  "background_color":"#071426",
+  "theme_color":"#071426",
   "lang":"zh-HK"
 }
