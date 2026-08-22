@@ -1,23 +1,31 @@
-# Adelaide Tycoon V0.6.2
+# Adelaide Tycoon V0.7
 
 A local multiplayer, pass-and-play PWA board game designed for one phone and 2–6 players.
 
-## V0.6.2 QA hotfix
+## V0.7 highlights
 
-- Fixed a critical board-geometry bug: the game had 25 spaces but only 20 grid coordinates.
-- Board now uses 25 unique positions on a 7×7 layout.
-- Large dice button delegates to the original core dice button instead of replacing its handler.
-- Added startup self-checks for board-space count, unique coordinates, and required core buttons.
-- Added visible QA status on the start screen.
-- Added runtime error surfacing instead of silent failures.
-- Bumped PWA cache and asset query versions to `062`.
+- Classic mode and Quick mode (6 rounds, highest net worth wins)
+- House Rules: Free Parking Jackpot and optional Double GO
+- Player token selection: car, hat, dog, ship, skate and duck
+- New current-player HUD with cash, estimated net worth, mode and round
+- Stronger mobile-game dice result burst, token idle animation and active-tile glow
+- Property panel now uses the property colour as a visual identity
+- Free Parking jackpot status shown during play
+- Upgraded pass-the-phone and Chance / Community Chest animation
+- 25-space / 25-coordinate board QA retained from V0.6.2
+- Network-first PWA cache updated to `adelaide-tycoon-v07`
+
+## Design reference
+
+V0.7 takes interaction ideas from modern digital board games such as pass-and-play, quick game modes, house-rule customisation, token selection and strong animated feedback, while keeping Adelaide Tycoon its own visual identity and original assets.
 
 ## Version history
 
-- **V0.6.2** — full QA hotfix, 25-space board fix, startup self-checks, PWA refresh
-- **V0.6.1** — dice delegation hotfix
-- **V0.6** — refreshed UI and button feedback
-- **V0.5** — larger dice area and animation upgrade
+- **V0.7** — mobile board-game upgrade, Quick Mode, House Rules, tokens, turn HUD, richer animation
+- **V0.6.2** — 25-space board geometry fix and startup QA checks
+- **V0.6.1** — dice hotfix
+- **V0.6** — visual refresh and button handling improvements
+- **V0.5** — large dice control and PWA refresh improvements
 - **V0.4** — dice/card animations, sound, vibration, pass-the-phone privacy screen
 - **V0.3** — colour groups, building rules, mortgage, auctions, upgraded trading
 - **V0.2** — jail, event cards, bankruptcy and winner flow
@@ -25,6 +33,4 @@ A local multiplayer, pass-and-play PWA board game designed for one phone and 2�
 
 ## Run
 
-Publish the repository with GitHub Pages or open `index.html` locally.
-
-For an installed iPhone PWA, open the GitHub Pages URL once in Safari after an update so the latest service worker can take control.
+Open `index.html`, or publish the `main` branch using GitHub Pages.
