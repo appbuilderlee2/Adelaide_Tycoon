@@ -1,4 +1,4 @@
-const CACHE='adelaide-tycoon-v062';
+const CACHE='adelaide-tycoon-v07';
 const ASSETS=['./','./index.html','./styles.css','./v5.css','./app.js','./v5.js','./manifest.webmanifest'];
 
 self.addEventListener('install',event=>{
