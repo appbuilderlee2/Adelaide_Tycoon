@@ -1,0 +1,8 @@
+/* Adelaide Tycoon V1.2 — classic rules visuals */
+.v12-rules-badge{order:4;align-self:flex-start;padding:4px 8px;border-radius:999px;background:#fff2bf;color:#6d5410;font-size:8px;font-weight:900;letter-spacing:.45px;border:1px solid #ead37b}
+.v12-extra-roll{grid-column:span 2;min-height:48px;border:0;border-radius:15px;background:linear-gradient(180deg,#ffd85b,#f0b82e);color:#3f2c00;font-weight:950;box-shadow:0 6px 0 #bf8d12,0 10px 18px rgba(95,67,0,.18);display:flex;align-items:center;justify-content:center;gap:8px}
+.v12-extra-roll span{font-size:21px}.v12-extra-roll:active{transform:translateY(4px);box-shadow:0 2px 0 #bf8d12,0 6px 12px rgba(95,67,0,.14)}
+.space.v12-go-jail{background:linear-gradient(145deg,#ffe3e0,#ffc3bd)!important}.space.v12-go-jail .label{font-weight:900;color:#7e2118}.space.v12-go-jail .space-icon{font-size:17px}
+.houses{font-size:10px;letter-spacing:-1px;white-space:nowrap}.houses:has(+ .mortgage-tag){opacity:.7}
+body.v10-playing #v12RulesBadge{display:inline-flex}
+@media(max-height:760px){.v12-rules-badge{display:none!important}.v12-extra-roll{min-height:42px;font-size:12px}}
