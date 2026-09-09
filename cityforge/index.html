@@ -1,64 +1,15 @@
 <!doctype html>
 <html lang="zh-HK">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#11161c" />
-<title>CityForge Web v0.1</title>
-<link rel="manifest" href="manifest.json" />
-<link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1720" />
+  <title>CityForge Engine Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="app">
-    <header class="topbar">
-      <div class="brand"><span class="brandMark">◆</span><div><b>CityForge</b><small>WEB v0.1</small></div></div>
-      <div class="stats">
-        <span>💰 <b id="money">$120,000</b></span>
-        <span>👥 <b id="population">0</b></span>
-        <span>🙂 <b id="happiness">78%</b></span>
-        <span>🕒 <b id="clock">08:00</b></span>
-      </div>
-      <div class="topActions">
-        <button id="pauseBtn" title="Pause">⏸</button>
-        <button id="speedBtn" title="Speed">1×</button>
-        <button id="saveBtn">儲存</button>
-        <button id="loadBtn">讀取</button>
-      </div>
-    </header>
-
-    <main>
-      <canvas id="game"></canvas>
-
-      <aside class="demandPanel">
-        <div><span>住宅</span><i><em id="demandR"></em></i></div>
-        <div><span>商業</span><i><em id="demandC"></em></i></div>
-        <div><span>工業</span><i><em id="demandI"></em></i></div>
-      </aside>
-
-      <div class="hint" id="hint">拖動畫面移動 • 滾輪縮放 • 選工具後點擊格子建造</div>
-
-      <nav class="toolbar" aria-label="Build tools">
-        <button data-tool="select" class="active"><span>↖</span><small>選擇</small></button>
-        <button data-tool="road"><span>━</span><small>道路</small></button>
-        <button data-tool="res"><span>🏠</span><small>住宅</small></button>
-        <button data-tool="com"><span>🏪</span><small>商業</small></button>
-        <button data-tool="ind"><span>🏭</span><small>工業</small></button>
-        <button data-tool="bulldoze"><span>⌫</span><small>拆除</small></button>
-      </nav>
-
-      <section class="inspector" id="inspector">
-        <div class="grab"></div>
-        <h3>城市總覽</h3>
-        <div class="row"><span>住宅建築</span><b id="resCount">0</b></div>
-        <div class="row"><span>商業建築</span><b id="comCount">0</b></div>
-        <div class="row"><span>工業建築</span><b id="indCount">0</b></div>
-        <div class="row"><span>道路格</span><b id="roadCount">0</b></div>
-        <hr />
-        <div class="row"><span>每月收入</span><b id="income">$0</b></div>
-        <div class="row"><span>每月支出</span><b id="expense">$0</b></div>
-      </section>
-    </main>
-  </div>
-<script src="app.js"></script>
+  <canvas id="gameCanvas" aria-label="CityForge 3D game"></canvas>
+  <canvas id="hudCanvas" aria-label="CityForge game interface"></canvas>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
